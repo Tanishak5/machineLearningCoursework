@@ -2,7 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from jupyterlab.extensions.pypi import xmlrpc_transport_override
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -45,10 +44,10 @@ lin_reg = LinearRegression()
 lin_reg.fit(X_train, y_train)
 print(lin_reg.coef_)
 
-RMSE_train = np.sqrt(mean_squared_error(y_train, lin_reg.predict(X_train)))
-print('Train RMSE: ', round(RMSE_train, 2))
-RMSE_val = np.sqrt(mean_squared_error(y_val, lin_reg.predict(X_val)))
-print('val RMSE: ', round(RMSE_val, 2))
+MSE_train = mean_squared_error(y_train, lin_reg.predict(X_train))
+print('Train MSE: ', round(MSE_train, 2))
+MSE_val = mean_squared_error(y_val, lin_reg.predict(X_val))
+print('val MSE: ', round(MSE_val, 2))
 
 fig, ax = plt.subplots(figsize=(6,6))
 ax.scatter(y_val, lin_reg.predict(X_val))
