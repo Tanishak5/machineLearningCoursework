@@ -1,18 +1,12 @@
-# take in input data
-# split data into training / validation sets
-# How should I split the set, what linear regression model to use etc.
-# test
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-# from sklearn.preprocessing import StandardScaler
 
-# from skimage import io
-# from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-# from sklearn.model_selection import train_test_split
-# from sklearn.linear_model import LinearRegression
-# from sklearn.metrics import mean_squared_error
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
 
 # Check if there are any outliers,
 # Check how much data
@@ -21,9 +15,6 @@ import seaborn as sns
 # choose test/train split
 # fit then train model
 
-import pandas as pd
-from sklearn.preprocessing import StandardScaler
-
 training_data = np.loadtxt("regression_train.txt")
 X = training_data[:, :3] # Keeps x1,x2,x3 (n rows, 3 columns)
 y = training_data[:, 3] # (n rows, 1 columns)
@@ -31,21 +22,25 @@ dataframe = pd.DataFrame(training_data, columns=['x1', 'x2', 'x3', 'y'])
 # plot = sns.pairplot(dataframe)
 # plt.show()
 
-scaler = StandardScaler().fit(X)
-X_scaled = scaler.transform(X)
-print(X_scaled.mean(axis=0))
-print(X_scaled.std(axis=0))
 
 
-#
-#
-#
-# scaler = StandardScaler().
-# X_scaled = scaler.transform(X)
-# print(X_scaled.mean(axis=0))
-# print(X_scaled.std(axis=0))
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# Then compute the test/train split
-# Run model
-# why the chosen model
-# Do i need penalties ?
+scaler = StandardScaler().fit(X_train)
+X_scaled = scaler.transform(X_train)
+X_val_scaled = scaler.transform(X_val)
+
+lin_reg = LinearRegression()
+lin_reg.fit(X_train, y_train)
+print(lin_reg.coef_)
+
+RMSE_train = np.sqrt(mean_squared_error(y_train, lin_reg.predict(X_train)))
+print('Train RMSE: ', round(RMSE_train,2))
+RMSE_test = np.sqrt(mean_squared_error(y_val, lin_reg.predict(X_val)))
+print('Test RMSE: ', round(RMSE_test,2))
+
+fig, ax = plt.subplots(figsize=(6,6))
+ax.scatter(y_val, lin_reg.predict(X_val))
+ax.plot([0,5],[0,5])
+ax.set_xlabel('Real value')
+ax.set_ylabel('Prediction')
