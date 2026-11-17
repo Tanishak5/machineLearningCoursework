@@ -27,6 +27,17 @@ poly = PolynomialFeatures(degree=2, include_bias=False)
 
 
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# for degree in [2, 3]:
+#
+#     polynomial_model = make_pipeline(
+#         PolynomialFeatures(
+#             degree=degree,
+#             include_bias=False
+#         ),
+#         StandardScaler(),
+#         LinearRegression()
+#     )
 X_train_poly = poly.fit_transform(X_train[:, 1:])
 X_val_poly = poly.transform(X_val[:, 1:])
 
@@ -40,17 +51,20 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X_train_modified)
 X_val_scaled = scaler.transform(X_val_modified)
 
+
+
 lin_reg = LinearRegression()
-lin_reg.fit(X_train, y_train)
+lin_reg.fit(X_scaled, y_train)
 print(lin_reg.coef_)
 
-MSE_train = mean_squared_error(y_train, lin_reg.predict(X_train))
+MSE_train = mean_squared_error(y_train, lin_reg.predict(X_scaled))
 print('Train MSE: ', round(MSE_train, 2))
-MSE_val = mean_squared_error(y_val, lin_reg.predict(X_val))
+MSE_val = mean_squared_error(y_val, lin_reg.predict(X_val_scaled))
 print('val MSE: ', round(MSE_val, 2))
 
-fig, ax = plt.subplots(figsize=(6,6))
-ax.scatter(y_val, lin_reg.predict(X_val))
-ax.plot([0,5],[0,5])
-ax.set_xlabel('Real value')
-ax.set_ylabel('Prediction')
+#MODIFY FROM LAB TOMORROW
+# fig, ax = plt.subplots(figsize=(6,6))
+# ax.scatter(y_val, lin_reg.predict(X_val_scaled))
+# ax.plot([0,5],[0,5])
+# ax.set_xlabel('Real value')
+# ax.set_ylabel('Prediction')
