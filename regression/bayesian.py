@@ -4,12 +4,16 @@ from scipy.stats import norm
 
 import pymc as pm
 import arviz as az
+from sklearn.preprocessing import StandardScaler
 
 training_data = np.loadtxt("regression_train.txt")
 X = training_data[:, :3] # Keeps x1,x2,x3 (n rows, 3 columns)
 y = training_data[:, 3] # (n rows, 1 columns)
 model = pm.Model()
 num_samples = 2000
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 
 with model:
     # Defining our priors
@@ -27,28 +31,31 @@ with model:
     sampler = pm.NUTS() # Hamiltonian MCMC with No U-Turn Sampler
     # or alternatively
     # sampler = pm.Metropolis()
-    idata = pm.sample(num_samples, step=sampler, progressbar=True)
+    idata = pm.sample(num_samples, draws=2000,
+                      tune=1000,
+                      chains=4,
+                      target_accept=0.9)
 
-plt.figure(figsize=(5, 5))
-plt.hist(idata.posterior['w'].values[0, :, 0], 25, histtype='step')
-plt.xlabel('$w_1$')
-plt.show()
+# plt.figure(figsize=(5, 5))
+# plt.hist(idata.posterior['w'].values[0, :, 0], 25, histtype='step')
+# plt.xlabel('$w_1$')
+# plt.show()
 
-plt.figure(figsize=(5, 5))
-plt.hist(idata.posterior['w'].values[0, :, 1], 25, histtype='step')
-plt.xlabel('$w_2$')
-plt.show()
-
-plt.figure(figsize=(5, 5))
-plt.hist(idata.posterior['w'].values[0, :, 2], 25, histtype='step')
-plt.xlabel('$w_3$')
-plt.show()
-
-
-plt.figure(figsize=(5, 5))
-plt.hist(idata.posterior['sigma'].values[0,:], 25, histtype='step')
-plt.xlabel('$\\sigma$')
-plt.show()
+# plt.figure(figsize=(5, 5))
+# plt.hist(idata.posterior['w'].values[0, :, 1], 25, histtype='step')
+# plt.xlabel('$w_2$')
+# plt.show()
+#
+# plt.figure(figsize=(5, 5))
+# plt.hist(idata.posterior['w'].values[0, :, 2], 25, histtype='step')
+# plt.xlabel('$w_3$')
+# plt.show()
+#
+#
+# plt.figure(figsize=(5, 5))
+# plt.hist(idata.posterior['sigma'].values[0,:], 25, histtype='step')
+# plt.xlabel('$\\sigma$')
+# plt.show()
 
 print(az.summary(
     idata,
@@ -64,7 +71,7 @@ plt.tight_layout()
 plt.show()
 #rhat
 
-#BASLIEN MODEL
+#BASLIEN MODEL standard deviation 20
 # Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
 # Qt: Session management error: None of the authentication protocols specified are supported
 # mean     sd eti89_lb eti89_ub ess_bulk ess_tail r_hat mcse_mean  mcse_sd
@@ -74,7 +81,7 @@ plt.show()
 # w[2]     0.01  0.035   -0.045    0.066     5651     2960  1.00   0.00046  0.00053
 # sigma   2.334  0.074      2.2      2.5     5289     3259  1.00     0.001   0.0012
 #
-# #MODEL WHERE PRIOR - W HAS STD1
+# #MODEL WHERE PRIOR - STANDARD DEVIATION 1
 # Qt: Session management error: None of the authentication protocols specified are supported
 # mean     sd eti89_lb eti89_ub ess_bulk        ess_tail   r_hat    mcse_mean  mcse_sd
 # w0      0.152  0.103   -0.018     0.31     5409     2798  1.00    0.0014   0.0016
@@ -83,7 +90,7 @@ plt.show()
 # w[2]   0.0105  0.035   -0.046    0.067     6368     3316  1.00   0.00044  0.00053
 # sigma   2.332  0.073      2.2      2.5     5708     3327  1.00   0.00098   0.0011
 
-#mODEL pior has std 5
+#Standard deviation 5
 # Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
 # Qt: Session management error: None of the authentication protocols specified are supported
 # mean     sd eti89_lb eti89_ub ess_bulk            ess_tail r_hat  mcse_mean  mcse_sd
