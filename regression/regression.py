@@ -1,3 +1,4 @@
+from tkinter.constants import RIDGE
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,65 +7,57 @@ from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import cross_val_score, KFold
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import RidgeCV
+from sklearn.linear_model import LassoCV
+#ridge = l2
+#lasso = l1
+#The mean for the baseline, predicting only from the y mean is 7.727
 
-# Check if there are any outliers,
-# Check how much data
-# will have to use multivariable inear regression
-# standard scaler
-# choose test/train split
-# fit then train model
 
 training_data = np.loadtxt("regression_train.txt")
 X = training_data[:, :3] # Keeps x1,x2,x3 (n rows, 3 columns)
 y = training_data[:, 3] # (n rows, 1 columns)
 dataframe = pd.DataFrame(training_data, columns=['x1', 'x2', 'x3', 'y'])
-# plot = sns.pairplot(dataframe)
-# plt.show()
+k_folds = KFold(n_splits = 5, shuffle = True, random_state=40)
+# X_train, X_val, y_train, y_val = train_test_split(
+#     X, y,
+#     test_size=0.2,
+#     random_state=10
+# )
 
-poly = PolynomialFeatures(degree=2, include_bias=False)
+preprocessor = ColumnTransformer(
+    transformers = [
+        ("linear", "passthrough", [0]),
+        ("polynomial", PolynomialFeatures(degree=2, include_bias = False), [1,2])
+    ]
+)
 
-
-
-
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# for degree in [2, 3]:
+model = make_pipeline(
+    preprocessor,
+    StandardScaler(),
+    # LinearRegression()
+    RidgeCV(
+        alphas=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
+    )
+)
+# model.fit(X_train, y_train)
+# preds = model.predict(X_val)
+# mse = mean_squared_error(y_val, preds)
 #
-#     polynomial_model = make_pipeline(
-#         PolynomialFeatures(
-#             degree=degree,
-#             include_bias=False
-#         ),
-#         StandardScaler(),
-#         LinearRegression()
-#     )
-X_train_poly = poly.fit_transform(X_train[:, 1:])
-X_val_poly = poly.transform(X_val[:, 1:])
-
-X_train_modified = np.column_stack((X_train[:, 0], X_train_poly))
-X_val_modified = np.column_stack((X_val[:, 0], X_val_poly))
-
+# print(f"Random state {10}: MSE = {mse:.4f}")
+#
+scores = cross_val_score(
+    model,
+    X,
+    y,
+    cv = k_folds,
+    scoring = 'neg_mean_squared_error'
+)
+#
+print("Mean CV MSE:", round(-scores.mean(), 2))
+print("Std CV MSE:", round(scores.std(), 2))
 
 
-
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X_train_modified)
-X_val_scaled = scaler.transform(X_val_modified)
-
-
-
-lin_reg = LinearRegression()
-lin_reg.fit(X_scaled, y_train)
-print(lin_reg.coef_)
-
-MSE_train = mean_squared_error(y_train, lin_reg.predict(X_scaled))
-print('Train MSE: ', round(MSE_train, 2))
-MSE_val = mean_squared_error(y_val, lin_reg.predict(X_val_scaled))
-print('val MSE: ', round(MSE_val, 2))
-
-#MODIFY FROM LAB TOMORROW
-# fig, ax = plt.subplots(figsize=(6,6))
-# ax.scatter(y_val, lin_reg.predict(X_val_scaled))
-# ax.plot([0,5],[0,5])
-# ax.set_xlabel('Real value')
-# ax.set_ylabel('Prediction')

@@ -11,7 +11,7 @@ training_data = np.loadtxt("regression_train.txt")
 X = training_data[:, :3] # Keeps x1,x2,x3 (n rows, 3 columns)
 y = training_data[:, 3] # (n rows, 1 columns)
 
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size = 0.3, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size = 0.3, random_state=10)
 scaler = StandardScaler().fit(X_train)
 X_train_scaled = scaler.transform(X_train)
 X_val_scaled = scaler.transform(X_val)
@@ -38,8 +38,9 @@ val_loader = DataLoader(
 )
 
 batch_size = 32
-num_epochs = 10
-learning_rate = 0.01
+num_epochs = 200
+learning_rate = 0.001
+
 
 
 
@@ -48,14 +49,16 @@ class MLP(nn.Module):
     def __init__(self):
         super().__init__()
         self.nn = nn.Sequential(
-            nn.Linear(3, 32),
+            nn.Linear(3, 8),
             nn.ReLU(),
-            nn.Linear(32, 16),
-            nn.ReLU(),
-            nn.Linear(16, 1),
+            nn.Linear(8, 1),
+
+            # nn.ReLU(),
+            # nn.Linear(16, 1),
         )
 
     def forward(self, x):
+        #do i need to flatten or do anything else here
         logits = self.nn(x)
         return logits
 
@@ -64,7 +67,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = MLP().to(device)
 
 criterion = nn.MSELoss()
-optimizer = optim.SGD(model.parameters(), lr=learning_rate)
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 
 
@@ -75,14 +78,16 @@ def train(model, device, train_loader, criterion, optimizer, epoch):
 
     for X_batch, y_batch in train_loader:
         X_batch, y_batch = X_batch.to(device), y_batch.to(device)
+
         preds = model(X_batch)
         loss = criterion(preds, y_batch)
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
         running_loss += loss.item()
-        return running_loss / len(train_loader)
+    return running_loss / len(train_loader)
 
 
 
@@ -93,17 +98,25 @@ def validate(model, device, test_loader, criterion):
 
     with torch.no_grad():
         for X_batch, y_batch in test_loader:
+
             X_batch, y_batch = X_batch.to(device), y_batch.to(device)
+
             preds = model(X_batch)
             loss = criterion(preds, y_batch)
             running_loss += loss.item()
-            return running_loss / len(val_loader)
+        return running_loss / len(val_loader)
 
 
 
 for epoch in range(num_epochs):
-    train(model, device, train_loader, criterion, optimizer, epoch)
-    validate(model, device, val_loader, criterion)
+    train_loss = train(model, device, train_loader, criterion, optimizer, epoch)
+    val_loss = validate(model, device, val_loader, criterion)
+    if (epoch + 1) %50 == 0:
+        print(
+            f"Epoch {epoch+1},"
+            f" trainLoss: {train_loss:.6f}, "
+            f"Val lOSS: {val_loss:.6f}"
+        )
 
 
 model.eval()
