@@ -38,10 +38,10 @@ preprocessor = ColumnTransformer(
 model = make_pipeline(
     preprocessor,
     StandardScaler(),
-    # LinearRegression()
-    RidgeCV(
-        alphas=[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
-    )
+    LinearRegression()
+    # RidgeCV(
+    #     alphas=[0.001]
+    # )
 )
 # model.fit(X_train, y_train)
 # preds = model.predict(X_val)
