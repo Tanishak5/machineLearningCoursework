@@ -176,10 +176,18 @@ cv = StratifiedKFold(
 all_models = []
 num_models = 10
 sample_size = len(training_data)
+from sklearn.ensemble import BaggingClassifier
 
-for m in range(num_models):
+
+
+for m in [2, 5, 10,20,50]:
     depth = 'unrestricted'
-    model = DecisionTreeClassifier()
+    model = BaggingClassifier(
+        estimator = DecisionTreeClassifier,
+        n_estimators = m,
+        bootstrap = True,
+        random_state=42
+    )
     scores = cross_val_score(
         model,
         X,
