@@ -152,3 +152,40 @@ training_data = np.loadtxt("classification_train.txt")
 #     print("Standard deviation:", scores.std())
 #
 #
+
+#Type of ensemble method
+"""
+bagging
+random forest
+boosting
+adaboost
+
+
+"""
+#BAGGING
+X = training_data[:,:-1]
+y = [int(z) for z in training_data[:,-1]]
+
+
+cv = StratifiedKFold(
+    n_splits = 5,
+    shuffle = True,
+    random_state=42
+)
+
+all_models = []
+num_models = 10
+sample_size = len(training_data)
+
+for m in range(num_models):
+    depth = 'unrestricted'
+    model = DecisionTreeClassifier()
+    scores = cross_val_score(
+        model,
+        X,
+        y,
+        cv=cv,
+        scoring="accuracy"
+    )
+
+    print(f"Depth: {depth}, Mean accuracy: {scores.mean():.4f}, std: {scores.std():.4f}")
