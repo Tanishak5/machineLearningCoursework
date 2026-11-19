@@ -47,8 +47,8 @@ with model:
     # Defining our priors
     #wtx
 
-    w0 = pm.Normal('w0', mu=0, sigma=5)
-    w = pm.Normal('w', mu=0, sigma=5, shape=X_scaled_train.shape[1])
+    w0 = pm.Normal('w0', mu=0, sigma=20)
+    w = pm.Normal('w', mu=0, sigma=20, shape=X_scaled_train.shape[1])
     sigma = pm.Uniform('sigma', lower=0, upper=20)
 
     y_est = w0 + pm.math.dot(X_scaled_train,w)

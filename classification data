@@ -1,0 +1,205 @@
+#using x1,x2,x3 so all features
+# Fold accuracies: [0.67 0.71 0.67 0.68 0.83]
+# Mean accuracy: 0.712
+# Standard deviation: 0.06079473661428263
+
+---------Logistic Regression-----------
+#X1,X2 no x3
+# Fold accuracies: [0.67 0.71 0.67 0.68 0.83]
+# Mean accuracy: 0.712
+# Standard deviation: 0.06079473661428263
+
+#X1,X3 no x2
+# Fold accuracies: [0.67 0.71 0.66 0.68 0.82]
+# Mean accuracy: 0.708
+# Standard deviation: 0.0584465567848098
+
+#X2, x3
+# Fold accuracies: [0.67 0.71 0.67 0.68 0.83]
+# Mean accuracy: 0.712
+# Standard deviation: 0.06079473661428263
+
+# so removing some of the features make no difference
+
+
+# x1        x2        x3         y
+# x1  1.000000  0.222218  0.450510  0.141867
+# x2  0.222218  1.000000 -0.770338 -0.306198
+# x3  0.450510 -0.770338  1.000000  0.373154
+# y   0.141867 -0.306198  0.373154  1.000000
+
+
+#0.01 = c
+# Fold accuracies: [0.72 0.77 0.71 0.68 0.78]
+# Mean accuracy: 0.732
+# Standard deviation: 0.03762977544445356
+
+#0.1 - c
+# Fold accuracies: [0.67 0.72 0.67 0.67 0.83]
+# Mean accuracy: 0.712
+# Standard deviation: 0.062096698785040066
+
+# c=1
+#
+# Fold accuracies: [0.67 0.71 0.67 0.68 0.83]
+# Mean accuracy: 0.712
+# Standard deviation: 0.06079473661428263
+#
+
+# c=10
+# Fold accuracies: [0.67 0.71 0.66 0.68 0.82]
+# Mean accuracy: 0.708
+# Standard deviation: 0.0584465567848098
+
+#c=100
+# Fold accuracies: [0.67 0.71 0.66 0.68 0.82]
+# Mean accuracy: 0.708
+# Standard deviation: 0.0584465567848098
+
+
+-----------Decision Tree----------------------
+
+# Fold accuracies: [0.58 0.6  0.54 0.65 0.61]
+# Mean accuracy: 0.596
+# Standard deviation: 0.03611094017053557
+#
+# Depth=2, Mean=0.754, Std=0.056
+# Depth=3, Mean=0.752, Std=0.053
+# Depth=5, Mean=0.720, Std=0.058
+# Depth=10, Mean=0.660, Std=0.038
+# Depth=None, Mean=0.596, Std=0.036
+
+#depth 2/3 seems best
+#Criterion
+# criterion=gini, Mean=0.754, Std=0.056
+# criterion=entropy, Mean=0.756, Std=0.051
+
+#sample splits d=2
+# min_split_sampl=2, Mean=0.756, Std=0.051
+# min_split_sampl=5, Mean=0.756, Std=0.051
+# min_split_sampl=10, Mean=0.756, Std=0.051
+# min_split_sampl=20, Mean=0.756, Std=0.051
+# min_split_sampl=30, Mean=0.756, Std=0.051
+#same but deno depth
+# min_split_sampl=2, Mean=0.626, Std=0.016
+# min_split_sampl=5, Mean=0.636, Std=0.036
+# min_split_sampl=10, Mean=0.620, Std=0.021
+# min_split_sampl=20, Mean=0.654, Std=0.050
+
+#d = 3
+# min_split_sampl=2, Mean=0.748, Std=0.047
+# min_split_sampl=5, Mean=0.748, Std=0.047
+# min_split_sampl=10, Mean=0.748, Std=0.047
+# min_split_sampl=20, Mean=0.748, Std=0.047
+
+
+#samples per leaf no depth restricted
+# min_split_sampl_leaf=1, Mean=0.626, Std=0.016
+# min_split_sampl_leaf=2, Mean=0.616, Std=0.020
+# min_split_sampl_leaf=5, Mean=0.630, Std=0.033
+# min_split_sampl_leaf=10, Mean=0.710, Std=0.047
+# min_split_sampl_leaf=20, Mean=0.726, Std=0.062
+
+#SAME BUT DEPTH =2
+# min_split_sampl_leaf=1, Mean=0.756, Std=0.051
+# min_split_sampl_leaf=2, Mean=0.756, Std=0.051
+# min_split_sampl_leaf=5, Mean=0.756, Std=0.051
+# min_split_sampl_leaf=10, Mean=0.758, Std=0.051
+# min_split_sampl_leaf=20, Mean=0.760, Std=0.051
+
+
+
+
+
+
+------------SVM---------------------
+
+#LINEAR
+# Fold accuracies: [0.69 0.73 0.65 0.68 0.81]
+# Mean accuracy: 0.712
+# Standard deviation: 0.05528109984434102
+
+
+#RBF c=1
+# Fold accuracies: [0.69 0.73 0.69 0.72 0.82]
+# Mean accuracy: 0.73
+# Standard deviation: 0.047749345545253286
+
+
+
+#RBF
+# c 0.001
+# Fold accuracies: [0.57 0.57 0.56 0.56 0.56]
+# Mean accuracy: 0.564
+# Standard deviation: 0.004898979485566306
+# c 0.01
+# Fold accuracies: [0.57 0.57 0.56 0.56 0.56]
+# Mean accuracy: 0.564
+# Standard deviation: 0.004898979485566306
+# c 0.1
+# Fold accuracies: [0.72 0.72 0.72 0.7  0.81]
+# Mean accuracy: 0.7340000000000001
+# Standard deviation: 0.03878143885933067
+# c 1
+# Fold accuracies: [0.69 0.73 0.69 0.72 0.82]
+# Mean accuracy: 0.73
+# Standard deviation: 0.047749345545253286
+# c 10
+# Fold accuracies: [0.7  0.72 0.68 0.71 0.83]
+# Mean accuracy: 0.728
+# Standard deviation: 0.052687759489277945
+# c 100
+# Fold accuracies: [0.7  0.71 0.68 0.69 0.85]
+# Mean accuracy: 0.726
+# Standard deviation: 0.06280127387243033
+
+
+#LINEAR
+# c 0.001
+# Fold accuracies: [0.57 0.57 0.56 0.56 0.56]
+# Mean accuracy: 0.564
+# Standard deviation: 0.004898979485566306
+# c 0.01
+# Fold accuracies: [0.7  0.77 0.7  0.67 0.78]
+# Mean accuracy: 0.724
+# Standard deviation: 0.04317406628984581
+# c 0.1
+# Fold accuracies: [0.69 0.73 0.65 0.68 0.82]
+# Mean accuracy: 0.714
+# Standard deviation: 0.05885575587824862
+# c 1
+# Fold accuracies: [0.69 0.73 0.65 0.68 0.81]
+# Mean accuracy: 0.712
+# Standard deviation: 0.05528109984434102
+# c 10
+# Fold accuracies: [0.69 0.73 0.67 0.68 0.81]
+# Mean accuracy: 0.716
+# Standard deviation: 0.0512249938994628
+# c 100
+# Fold accuracies: [0.69 0.73 0.67 0.68 0.81]
+# Mean accuracy: 0.716
+# Standard deviation: 0.0512249938994628
+
+
+
+#GAMMA RBF
+# gamma scale
+# Fold accuracies: [0.69 0.73 0.69 0.72 0.82]
+# Mean accuracy: 0.73
+# Standard deviation: 0.047749345545253286
+# gamma 0.001
+# Fold accuracies: [0.57 0.57 0.55 0.56 0.56]
+# Mean accuracy: 0.562
+# Standard deviation: 0.007483314773547842
+# gamma 0.01
+# Fold accuracies: [0.68 0.76 0.67 0.66 0.8 ]
+# Mean accuracy: 0.7140000000000001
+# Standard deviation: 0.05571355310873648
+# gamma 0.1
+# Fold accuracies: [0.69 0.71 0.7  0.68 0.8 ]
+# Mean accuracy: 0.716
+# Standard deviation: 0.043174066289845825
+# gamma 1
+# Fold accuracies: [0.67 0.72 0.67 0.72 0.84]
+# Mean accuracy: 0.724
+# Standard deviation: 0.06216108107168019

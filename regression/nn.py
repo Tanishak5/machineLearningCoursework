@@ -37,7 +37,7 @@ val_loader = DataLoader(
     shuffle=False
 )
 
-batch_size = 16
+batch_size = 32
 num_epochs = 200
 learning_rate = 0.001
 
@@ -87,7 +87,7 @@ def train(model, device, train_loader, criterion, optimizer, epoch):
         optimizer.step()
 
         running_loss += loss.item() * X_batch.size(0)
-    return running_loss / len(train_loader)
+    return running_loss / len(train_loader.dataset)
 
 
 
@@ -104,10 +104,11 @@ def validate(model, device, test_loader, criterion):
             preds = model(X_batch)
             loss = criterion(preds, y_batch)
             running_loss += loss.item()
-        return running_loss / len(val_loader)
+        return running_loss / len(val_loader.dataset)
 
 
-
+best_val_loss = float("inf")
+best_model_state = None
 for epoch in range(num_epochs):
     train_loss = train(model, device, train_loader, criterion, optimizer, epoch)
     val_loss = validate(model, device, val_loader, criterion)
@@ -117,8 +118,16 @@ for epoch in range(num_epochs):
             f" trainLoss: {train_loss:.6f}, "
             f"Val lOSS: {val_loss:.6f}"
         )
+    if val_loss < best_val_loss:
+        best_val_loss = val_loss
+        best_model_state = {
+            k: v.detach().clone()
+            for k, v in model.state_dict().items()
+        }
 
 
+model.load_state_dict(best_model_state)
+print(f"Best validation MSE: {best_val_loss:.6f}")
 model.eval()
 with torch.no_grad():
     preds = model(X_val.to(device))
@@ -127,3 +136,18 @@ with torch.no_grad():
 real_values = y_val.numpy().flatten()
 mse = mean_squared_error(real_values, preds)
 print("Nn mse: ", mse)
+#16 batch
+# Epoch 50, trainLoss: 5.479309, Val lOSS: 0.296690
+# Epoch 100, trainLoss: 4.781379, Val lOSS: 0.277754
+# Epoch 150, trainLoss: 4.343513, Val lOSS: 0.268531
+# Epoch 200, trainLoss: 4.125345, Val lOSS: 0.266052
+# Best validation MSE: 0.265404
+# Nn mse:  3.893496513366699
+
+#32
+# Epoch 50, trainLoss: 5.479043, Val lOSS: 0.294804
+# Epoch 100, trainLoss: 4.572222, Val lOSS: 0.273347
+# Epoch 150, trainLoss: 4.252400, Val lOSS: 0.270981
+# Epoch 200, trainLoss: 4.145715, Val lOSS: 0.270480
+# Best validation MSE: 0.267320
+# Nn mse:  3.965385675430298
