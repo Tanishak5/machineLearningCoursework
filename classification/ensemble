@@ -1,0 +1,48 @@
+model: bagging, Mean accuracy: 0.7580, std: 0.0511
+model: random forest, Mean accuracy: 0.7600, std: 0.0506
+model: adaboost, Mean accuracy: 0.7580, std: 0.0504
+ RF depth: 2, Mean accuracy: 0.7600, std: 0.0506
+ RF depth: 3, Mean accuracy: 0.7580, std: 0.0511
+ RF depth: 5, Mean accuracy: 0.7500, std: 0.0525
+ RF depth: None, Mean accuracy: 0.6900, std: 0.0329
+ RF depth = 2 estimators num: 10, Mean accuracy: 0.7500, std: 0.0490
+ RF depth = 2 estimators num: 20, Mean accuracy: 0.7620, std: 0.0504
+ RF depth = 2 estimators num: 50, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 100, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 200, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 3 estimators num: 10, Mean accuracy: 0.7560, std: 0.0520
+ RF depth = 3 estimators num: 20, Mean accuracy: 0.7580, std: 0.0504
+ RF depth = 3 estimators num: 50, Mean accuracy: 0.7540, std: 0.0508
+ RF depth = 3 estimators num: 100, Mean accuracy: 0.7580, std: 0.0504
+ RF depth = 3 estimators num: 200, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num of estimators: 100, min_samples_leaf: 1, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num of estimators: 200, min_samples_leaf: 1, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num of estimators: 100, min_samples_leaf: 3, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num of estimators: 200, min_samples_leaf: 3, Mean accuracy: 0.7580, std: 0.0511
+ RF depth = 2 estimators num of estimators: 100, min_samples_leaf: 5, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num of estimators: 200, min_samples_leaf: 5, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 100, max_features: 1, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 200, max_features: 1, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 100, max_features: 2, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 200, max_features: 2, Mean accuracy: 0.7600, std: 0.0506
+ RF depth = 2 estimators num: 100, max_features: 3, Mean accuracy: 0.7560, std: 0.0508
+ RF depth = 2 estimators num: 200, max_features: 3, Mean accuracy: 0.7560, std: 0.0508
+ adaboost max_depth = 1 estimators num: 10, Mean accuracy: 0.7600, std: 0.0506
+ adaboost max_depth = 1 estimators num: 20, Mean accuracy: 0.7600, std: 0.0506
+ adaboost max_depth = 1 estimators num: 50, Mean accuracy: 0.7540, std: 0.0508
+ adaboost max_depth = 1 estimators num: 100, Mean accuracy: 0.7480, std: 0.0527
+ adaboost max_depth = 1 estimators num: 200, Mean accuracy: 0.7340, std: 0.0557
+ADA Estimators fixed to 100, depth: 1, Mean accuracy: 0.7480, std: 0.0527
+ADA Estimators fixed to 100, depth: 2, Mean accuracy: 0.7140, std: 0.0585
+ bagging d = 2, estimators num: 10, Mean accuracy: 0.7560, std: 0.0500
+ bagging d = 2, estimators num: 20, Mean accuracy: 0.7620, std: 0.0496
+ bagging d = 2, estimators num: 50, Mean accuracy: 0.7560, std: 0.0508
+ bagging d = 2, estimators num: 100, Mean accuracy: 0.7560, std: 0.0508
+ bagging d = 2, estimators num: 200, Mean accuracy: 0.7560, std: 0.0508
+Bagging depth=2, Mean: 0.7560, std: 0.0535
+Bagging depth=3, Mean: 0.7540, std: 0.0531
+Bagging depth=5, Mean: 0.7240, std: 0.0706
+Bagging depth=None, Mean: 0.6900, std: 0.0329
+Bagging leaf=1, Mean: 0.7580, std: 0.0511
+Bagging leaf=3, Mean: 0.7560, std: 0.0508
+Bagging leaf=5, Mean: 0.7580, std: 0.0511
